@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quilt Fabric Calculator — Backing, Binding &amp; Batting | Easy Quilt Math</title>
+<meta name="description" content="Free quilt fabric calculator. Enter your quilt size and get exactly how much backing fabric, binding, and batting to buy — in plain fractions, rounded up the way fabric stores cut. Big type, no fuss.">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: #fbf7ef; color: #2b2622; font-size: 20px; line-height: 1.55; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px 48px; }
+  header { text-align: center; padding: 36px 16px 8px; }
+  header h1 { font-size: 2.3rem; color: #17635a; letter-spacing: .5px; }
+  header p { color: #6b5d4f; font-style: italic; margin-top: 6px; }
+  nav { text-align: center; padding: 10px 0 4px; }
+  nav a { color: #9a3b3b; margin: 0 12px; font-size: 1rem; }
+  .card { background: #fff; border: 1px solid #e4d9c8; border-radius: 14px; padding: 28px; margin-top: 22px; box-shadow: 0 2px 10px rgba(90,70,40,.06); }
+  .card h2 { color: #17635a; font-size: 1.5rem; margin-bottom: 10px; }
+  .card h3 { color: #9a3b3b; font-size: 1.2rem; margin: 18px 0 6px; }
+  label { display: block; font-weight: bold; margin: 16px 0 6px; }
+  input[type=number] { width: 100%; padding: 16px; font-size: 1.3rem; font-family: Georgia, serif; border: 2px solid #cbb894; border-radius: 10px; background: #fffdf8; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 620px) { .row { grid-template-columns: 1fr; } }
+  .presets { margin-top: 14px; }
+  .presets button, .printbtn { font-family: Georgia, serif; font-size: 1.05rem; padding: 12px 18px; margin: 4px 4px 4px 0; border-radius: 10px; border: 2px solid #17635a; background: #fff; color: #17635a; cursor: pointer; }
+  .presets button:active { background: #17635a; color: #fff; }
+  .calcbtn { display: block; width: 100%; margin-top: 24px; padding: 18px; font-family: Georgia, serif; font-size: 1.35rem; font-weight: bold; background: #17635a; color: #fff; border: none; border-radius: 12px; cursor: pointer; }
+  .calcbtn:active { background: #0f4a43; }
+  .result { display: none; }
+  .buyline { background: #fdf3e3; border: 2px solid #d9a441; border-radius: 12px; padding: 18px 20px; margin: 14px 0; font-size: 1.15rem; }
+  .buyline strong { color: #8a5a00; }
+  .buy { font-size: 1.45rem; font-weight: bold; color: #17635a; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 1.05rem; }
+  th, td { border: 1px solid #e4d9c8; padding: 10px 12px; text-align: left; }
+  th { background: #f4ecdc; color: #17635a; }
+  .small { font-size: .95rem; color: #6b5d4f; }
+  .cta { text-align: center; }
+  .cta a.btn { display: inline-block; margin-top: 12px; padding: 16px 30px; background: #9a3b3b; color: #fff; text-decoration: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; }
+  footer { text-align: center; color: #6b5d4f; font-size: .95rem; padding: 30px 16px 10px; }
+  footer a { color: #9a3b3b; margin: 0 10px; }
+  @media print {
+    nav, .presets, .calcbtn, .noprint { display: none !important; }
+    body { background: #fff; font-size: 14pt; }
+    .card { box-shadow: none; border: none; }
+    .result { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Easy Quilt Math</h1>
+    <p>The quilt fabric calculator that answers in plain fractions</p>
+  </header>
+  <nav>
+    <a href="index.html">Calculator</a>
+    <a href="quilt-size-chart.html">Size &amp; Yardage Chart</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </nav>
+
+  <div class="card">
+    <h2>How much fabric do I need?</h2>
+    <p>Type in the finished size of your quilt top. You will get backing, binding, and batting — all on this one screen.</p>
+    <div class="presets">
+      <span class="small">Or tap a standard size:</span><br>
+      <button type="button" data-w="36" data-l="52">Crib 36×52</button>
+      <button type="button" data-w="50" data-l="65">Throw 50×65</button>
+      <button type="button" data-w="70" data-l="90">Twin 70×90</button>
+      <button type="button" data-w="84" data-l="96">Full 84×96</button>
+      <button type="button" data-w="90" data-l="99">Queen 90×99</button>
+      <button type="button" data-w="110" data-l="108">King 110×108</button>
+    </div>
+    <div class="row">
+      <div>
+        <label for="qw">Quilt width (inches)</label>
+        <input type="number" id="qw" value="90" min="10" max="200" inputmode="decimal">
+      </div>
+      <div>
+        <label for="ql">Quilt length (inches)</label>
+        <input type="number" id="ql" value="99" min="10" max="200" inputmode="decimal">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="extra">Extra backing on each side (inches)</label>
+        <input type="number" id="extra" value="4" min="0" max="10" step="0.5" inputmode="decimal">
+      </div>
+      <div>
+        <label for="strip">Binding strip width (inches)</label>
+        <input type="number" id="strip" value="2.5" min="1.5" max="4" step="0.25" inputmode="decimal">
+      </div>
+    </div>
+    <button class="calcbtn" id="go" type="button">Do the Math</button>
+
+    <div class="result" id="result">
+      <h3>Backing — regular 44″ fabric</h3>
+      <div class="buyline" id="back44"></div>
+      <h3>Backing — 108″ wideback (no piecing, if it fits)</h3>
+      <div class="buyline" id="back108"></div>
+      <h3>Binding</h3>
+      <div class="buyline" id="binding"></div>
+      <h3>Batting</h3>
+      <div class="buyline" id="batting"></div>
+      <button class="printbtn noprint" type="button" onclick="window.print()">🖨 Print my cutting list</button>
+      <p class="small" style="margin-top:10px">Always measure your own quilt top — sizes vary. When in doubt, buy the larger amount; leftover backing makes lovely binding and labels.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How we figure it</h2>
+    <p>Our math is the same math quilt shops use:</p>
+    <p>• Your backing needs to be bigger than the quilt top — we add your “extra on each side” (4 inches is the usual) to every side, because the backing shifts while you quilt.</p>
+    <p>• A 44″ bolt gives you about <strong>42″ of usable width</strong> once the edges are trimmed square. A 108″ wideback gives about 106″.</p>
+    <p>• Yardage is always <strong>rounded UP to the nearest eighth of a yard</strong> — the way a store can actually cut it. We would rather you have two inches left over than come up two inches short.</p>
+    <p>• Binding strips are cut across a 44″ bolt, joined, and figured with 10 extra inches for joining and finishing the ends.</p>
+  </div>
+
+  <div class="card cta">
+    <h2>Get the free printable chart</h2>
+    <p>Our <a href="quilt-size-chart.html">Quilt Size &amp; Yardage Chart</a> puts the common sizes and their fabric needs on one page you can print and keep at your cutting table.</p>
+    <p style="margin-top:10px">Want more free tools and gentle reads for quilters? Join the free Reader Club letter from our friends at Mabel Quinn Books — large-print puzzle and activity books made for seniors, plus a free puzzle sampler when you join.</p>
+    <a class="btn" href="mailto:hello@mabelquinnbooks.com?subject=Quilt%20chart%20—%20join%20the%20Reader%20Club">Join by Email</a>
+    <p class="small" style="margin-top:10px">No spam — just the occasional note when there is something worth your time.</p>
+  </div>
+
+  <div class="card">
+    <h2>Common questions</h2>
+    <h3>Why does the backing need to be bigger than the quilt?</h3>
+    <p>Quilting pulls the layers in and things shift. Long-arm quilters usually ask for 4 extra inches on every side; home quilters do fine with 3–4. That extra is already in our numbers.</p>
+    <h3>Lengthwise or crosswise seams — which is better?</h3>
+    <p>We show you both. Lengthwise (grain running the long way) is sturdier and uses the fabric’s strength; crosswise sometimes takes a little less yardage. Either is fine for most quilts — pick the smaller number if your fabric has no directional print to match.</p>
+    <h3>Is wideback worth it?</h3>
+    <p>If your quilt fits the 108″ width, wideback means no seams, no piecing, and often less money than several yards of 44″. Our calculator tells you the wideback yardage side by side so you can compare at the store.</p>
+    <h3>What batting size should I buy?</h3>
+    <p>Batting should match your backing size, not just the quilt top. We name the smallest standard package that covers your backing — or tell you the size to cut from a roll.</p>
+  </div>
+
+  <footer>
+    Easy Quilt Math — a free tool for quilters.<br>
+    <a href="index.html">Calculator</a> · <a href="quilt-size-chart.html">Size Chart</a> · <a href="about.html">About</a> · <a href="privacy.html">Privacy</a>
+  </footer>
+</div>
+
+<script>
+function ceil8(y) { return Math.ceil(y * 8 - 1e-9) / 8; }
+function frac(y) {
+  var whole = Math.floor(y), rem = Math.round((y - whole) * 8);
+  if (rem === 8) { whole += 1; rem = 0; }
+  var f = {0:'', 1:'⅛', 2:'¼', 3:'⅜', 4:'½', 5:'⅝', 6:'¾', 7:'⅞'}[rem];
+  var s = (whole ? whole : '') + (f ? (whole ? ' ' : '') + f : (whole ? '' : '0'));
+  return s + ' yd';
+}
+function backing(w, l, usable) {
+  // lengthwise: panels run along the length
+  var pL = Math.ceil(w / usable), lenL = pL * l;
+  // crosswise: panels run across the width
+  var pC = Math.ceil(l / usable), lenC = pC * w;
+  return { pL: pL, yL: ceil8(lenL / 36), pC: pC, yC: ceil8(lenC / 36) };
+}
+function calc() {
+  var W = parseFloat(document.getElementById('qw').value),
+      L = parseFloat(document.getElementById('ql').value),
+      X = parseFloat(document.getElementById('extra').value),
+      S = parseFloat(document.getElementById('strip').value);
+  if (!(W > 0 && L > 0)) { return; }
+  if (!(X >= 0)) X = 4; if (!(S > 0)) S = 2.5;
+  var BW = W + 2 * X, BL = L + 2 * X;
+  var b44 = backing(BW, BL, 42), b108 = backing(BW, BL, 106);
+  var per = 2 * (W + L), need = per + 10, strips = Math.ceil(need / 42), bindYd = ceil8(strips * S / 36);
+  var pkgs = [[45,60,'Crib 45″ × 60″'],[72,90,'Twin 72″ × 90″'],[81,96,'Full 81″ × 96″'],[90,108,'Queen 90″ × 108″'],[120,120,'King 120″ × 120″']];
+  var bat = null;
+  for (var i = 0; i < pkgs.length; i++) {
+    var p = pkgs[i];
+    if ((p[0] >= BW && p[1] >= BL) || (p[1] >= BW && p[0] >= BL)) { bat = p[2]; break; }
+  }
+  document.getElementById('back44').innerHTML =
+    'Your backing must finish at least <strong>' + BW + '″ × ' + BL + '″</strong>.<br>' +
+    'Lengthwise seams: <span class="buy">Buy at least ' + frac(b44.yL) + '</span> <span class="small">(' + b44.yL.toFixed(2) + ' yd — ' + b44.pL + ' panel' + (b44.pL>1?'s':'') + ', each cut ' + BL + '″ long)</span><br>' +
+    'Crosswise seams: <span class="buy">Buy at least ' + frac(b44.yC) + '</span> <span class="small">(' + b44.yC.toFixed(2) + ' yd — ' + b44.pC + ' panel' + (b44.pC>1?'s':'') + ', each cut ' + BW + '″ long)</span>';
+  document.getElementById('back108').innerHTML = (b108.pL === 1)
+    ? 'One piece, no seams — it fits! <span class="buy">Buy at least ' + frac(b108.yL) + '</span> <span class="small">(' + b108.yL.toFixed(2) + ' yd — a single cut ' + BL + '″ long)</span>'
+    : 'Even wideback needs piecing at this size: <span class="buy">Buy at least ' + frac(Math.min(b108.yL, b108.yC)) + '</span> <span class="small">(' + Math.min(b108.yL, b108.yC).toFixed(2) + ' yd)</span>';
+  document.getElementById('binding').innerHTML =
+    'Your quilt’s edge measures ' + per + '″ around. Cut <strong>' + strips + ' strips</strong> at ' + S + '″ wide across a 44″ bolt, join them, and you will have about ' + (strips * 42) + '″ of binding — enough, with the ends finished.<br>' +
+    '<span class="buy">Buy at least ' + frac(bindYd) + '</span> <span class="small">(' + bindYd.toFixed(2) + ' yd of binding fabric)</span>';
+  document.getElementById('batting').innerHTML = bat
+    ? 'Cut your batting to match the backing: <strong>' + BW + '″ × ' + BL + '″</strong>.<br><span class="buy">Buy the ' + bat + ' package</span> <span class="small">— the smallest standard package that covers it.</span>'
+    : 'Cut your batting to match the backing: <span class="buy">' + BW + '″ × ' + BL + '″</span> <span class="small">— bigger than the standard packages, so buy it off the roll or piece batting scraps together.</span>';
+  document.getElementById('result').style.display = 'block';
+}
+document.getElementById('go').addEventListener('click', calc);
+var pb = document.querySelectorAll('.presets button');
+for (var i = 0; i < pb.length; i++) {
+  pb[i].addEventListener('click', function() {
+    document.getElementById('qw').value = this.getAttribute('data-w');
+    document.getElementById('ql').value = this.getAttribute('data-l');
+    calc();
+  });
+}
+</script>
+</body>
+</html>

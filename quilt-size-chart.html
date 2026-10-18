@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quilt Size &amp; Yardage Chart — Printable | Easy Quilt Math</title>
+<meta name="description" content="Printable chart of standard quilt sizes with the backing, binding, and batting each one needs. Free, from Easy Quilt Math.">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: #fbf7ef; color: #2b2622; font-size: 19px; line-height: 1.55; }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 48px; }
+  header { text-align: center; padding: 36px 16px 8px; }
+  header h1 { font-size: 2rem; color: #17635a; }
+  header p { color: #6b5d4f; font-style: italic; margin-top: 6px; }
+  nav { text-align: center; padding: 10px 0 4px; }
+  nav a { color: #9a3b3b; margin: 0 12px; font-size: 1rem; }
+  .card { background: #fff; border: 1px solid #e4d9c8; border-radius: 14px; padding: 28px; margin-top: 22px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: .98rem; }
+  th, td { border: 1px solid #d9cdb4; padding: 10px; text-align: left; }
+  th { background: #f4ecdc; color: #17635a; }
+  .printbtn { font-family: Georgia, serif; font-size: 1.05rem; padding: 12px 18px; border-radius: 10px; border: 2px solid #17635a; background: #fff; color: #17635a; cursor: pointer; margin-top: 14px; }
+  .small { font-size: .92rem; color: #6b5d4f; }
+  footer { text-align: center; color: #6b5d4f; font-size: .95rem; padding: 30px 16px 10px; }
+  footer a { color: #9a3b3b; margin: 0 10px; }
+  @media print { nav, .printbtn { display: none; } body { background: #fff; } .card { border: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Quilt Size &amp; Yardage Chart</h1>
+    <p>Print it. Pin it by the cutting table.</p>
+  </header>
+  <nav>
+    <a href="index.html">Calculator</a>
+    <a href="quilt-size-chart.html">Size &amp; Yardage Chart</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </nav>
+  <div class="card">
+    <p>Figures use the standard allowances: backing 4″ larger on every side, 42″ usable from a 44″ bolt, 106″ usable from a 108″ wideback, 2½″ binding strips, yardage rounded up to the nearest eighth. For the backing we list the better of the lengthwise/crosswise cuts. Odd size? Use the <a href="index.html">calculator</a> — it takes any measurements.</p>
+    <table id="chart">
+      <tr><th>Quilt</th><th>Top size</th><th>Backing to make</th><th>44″ backing</th><th>108″ wideback</th><th>Binding</th><th>Batting package</th></tr>
+    </table>
+    <button class="printbtn" type="button" onclick="window.print()">🖨 Print this chart</button>
+    <p class="small" style="margin-top:12px">Standard sizes are typical finished top sizes — always measure your own quilt top before you buy. Twin XL and other in-between sizes: run them through the calculator.</p>
+  </div>
+  <footer>
+    Easy Quilt Math — a free tool for quilters.<br>
+    <a href="index.html">Calculator</a> · <a href="quilt-size-chart.html">Size Chart</a> · <a href="about.html">About</a> · <a href="privacy.html">Privacy</a>
+  </footer>
+</div>
+<script>
+function ceil8(y) { return Math.ceil(y * 8 - 1e-9) / 8; }
+function frac(y) {
+  var whole = Math.floor(y), rem = Math.round((y - whole) * 8);
+  if (rem === 8) { whole += 1; rem = 0; }
+  var f = {0:'', 1:'⅛', 2:'¼', 3:'⅜', 4:'½', 5:'⅝', 6:'¾', 7:'⅞'}[rem];
+  return ((whole ? whole : '') + (f ? (whole ? ' ' : '') + f : (whole ? '' : '0'))) + ' yd';
+}
+function backingBest(w, l, usable) {
+  var pL = Math.ceil(w / usable), yL = ceil8(pL * l / 36);
+  var pC = Math.ceil(l / usable), yC = ceil8(pC * w / 36);
+  return Math.min(yL, yC);
+}
+var sizes = [
+  ['Crib', 36, 52], ['Throw / Lap', 50, 65], ['Twin', 70, 90],
+  ['Full / Double', 84, 96], ['Queen', 90, 99], ['King', 110, 108]
+];
+var pkgs = [[45,60,'Crib 45×60'],[72,90,'Twin 72×90'],[81,96,'Full 81×96'],[90,108,'Queen 90×108'],[120,120,'King 120×120']];
+var html = '';
+for (var i = 0; i < sizes.length; i++) {
+  var name = sizes[i][0], W = sizes[i][1], L = sizes[i][2];
+  var BW = W + 8, BL = L + 8;
+  var b44 = backingBest(BW, BL, 42), b108 = backingBest(BW, BL, 106);
+  var strips = Math.ceil((2 * (W + L) + 10) / 42), bind = ceil8(strips * 2.5 / 36);
+  var bat = 'Off the roll';
+  for (var j = 0; j < pkgs.length; j++) {
+    var p = pkgs[j];
+    if ((p[0] >= BW && p[1] >= BL) || (p[1] >= BW && p[0] >= BL)) { bat = p[2]; break; }
+  }
+  html += '<tr><td><strong>' + name + '</strong></td><td>' + W + '″ × ' + L + '″</td><td>' + BW + '″ × ' + BL + '″</td><td>' + frac(b44) + '</td><td>' + frac(b108) + '</td><td>' + frac(bind) + ' (' + strips + ' strips)</td><td>' + bat + '</td></tr>';
+}
+document.getElementById('chart').innerHTML += html;
+</script>
+</body>
+</html>
